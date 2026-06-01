@@ -1,0 +1,38 @@
+[
+    {
+        "id": "model1",
+        "name": "Model 1",
+        "desc": "",
+        "type": "Game 1",
+        "imagesCount": "0",
+        "model": "",
+        "sketchfab": ""
+    },
+    {
+        "id": "model2",
+        "name": "Model 2",
+        "desc": "",
+        "type": "Game 1",
+        "imagesCount": "0",
+        "model": "",
+        "sketchfab": ""
+    },
+    {
+        "id": "model3",
+        "name": "Model 3",
+        "desc": "",
+        "type": "Game 1",
+        "imagesCount": "0",
+        "model": "",
+        "sketchfab": ""
+    },
+    {
+        "id": "model4",
+        "name": "Model 4",
+        "desc": "",
+        "type": "Game 1",
+        "imagesCount": "0",
+        "model": "",
+        "sketchfab": ""
+    }
+]
