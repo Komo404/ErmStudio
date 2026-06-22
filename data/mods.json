@@ -1,0 +1,18 @@
+[
+    {
+        "id": "mod1",
+        "name": "Mod 1",
+        "desc": "",
+        "status": "In Development",
+        "stack": "",
+        "imagesCount": "0"
+    },
+    {
+        "id": "mod2",
+        "name": "Mod 2",
+        "desc": "",
+        "status": "In Development",
+        "stack": "",
+        "imagesCount": "0"
+    }
+]
