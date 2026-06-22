@@ -268,6 +268,10 @@ function loadSoftwareDetails(id)
         return;
     }
     
+    const softwareImages = software.images.images.map(image => `
+        <img src="${image}" onclick="changeProjectImage('${image}')" alt="${software.name} Preview">
+    `).join("");
+
     const software_view = `
         <div id="software-view-container">
             <div id="software-panel">
@@ -280,14 +284,7 @@ function loadSoftwareDetails(id)
                 <section id="right-software-info">
                     <div class="software-title"> ${software.name} </div>
                     <div id="software-image-display"> <img id="image-display" src="${software.images.card}" alt="${software.name} Preview"> </div>
-                    <section id="software-images">
-                        <img src="${software.images.card}" onclick="changeProjectImage('${software.images.card}')" alt="${software.name} Preview">
-                        <img src="${software.images.images[0]}" onclick="changeProjectImage('${software.images.images[0]}')" alt="${software.name} Preview">
-                        <img src="${software.images.images[1]}" onclick="changeProjectImage('${software.images.images[1]}')" alt="${software.name} Preview">
-                        <img src="${software.images.images[2]}" onclick="changeProjectImage('${software.images.images[2]}')" alt="${software.name} Preview">
-                        <img src="${software.images.images[3]}" onclick="changeProjectImage('${software.images.images[3]}')" alt="${software.name} Preview">
-                        <img src="${software.images.images[4]}" onclick="changeProjectImage('${software.images.images[4]}')" alt="${software.name} Preview">
-                    </section>
+                    <section id="software-images">${softwareImages}</section>
                 </section>
             </div>
         </div>
@@ -304,40 +301,49 @@ function loadModelDetails(id)
 
     if (!model) return;
 
-    console.log(model.images.images[0]);
+    const modelImages = [model.images.card, ...model.images.images].filter(Boolean);
+    const modelImageMarkup = modelImages.map(image => `
+        <img src="${image}" onclick="changeDisplayImage('${image}')" alt="${model.name} Preview">
+    `).join("");
+    const model3DButton = model.model
+        ? '<button class="view-3d-model" onclick="toggle3D()">3D</button>'
+        : "";
+    const model3DView = model.model ? `
+        <div id="threed-view" style="display: none;">
+            <button class="view-3d-model" onclick="toggle2D()">2D</button>
+            <model-viewer
+                src="${model.model}"
+                alt="${model.name} 3D Model"
+                auto-rotate
+                camera-controls
+                shadow-intensity="1"
+                style="width: 100%; height: 600px;">
+            </model-viewer>
+        </div>
+    ` : "";
+    const modelDescription = model.desc
+        ? `<div class="model-info-desc">${model.desc}</div>`
+        : "";
+    const sketchfabLink = model.sketchfab
+        ? `<a href="${model.sketchfab}" class="sketchfab"> SketchFab </a>`
+        : "";
 
     const model_view = `
         <div id="model-view-container">
             <div id="twod-view">
-                <section id="model-images">
-                    <img src="${model.images.card}" onclick="changeDisplayImage('${model.images.posed}')" alt="${model.name} Preview">
-                    <img src="${model.images.images[0]}" onclick="changeDisplayImage('${model.images.images[0]}')" alt="${model.name} Preview">
-                    <img src="${model.images.images[1]}" onclick="changeDisplayImage('${model.images.images[1]}')" alt="${model.name} Preview">
-                    <img src="${model.images.images[2]}" onclick="changeDisplayImage('${model.images.images[2]}')" alt="${model.name} Preview">
-                    <img src="${model.images.images[3]}" onclick="changeDisplayImage('${model.images.images[3]}')" alt="${model.name} Preview">
-                </section>
+                <section id="model-images">${modelImageMarkup}</section>
                 <div id="twod-model">
                     <img id="display-image" src="${model.images.card}" alt="${model.name} Preview">
-                    <button class="view-3d-model" onclick="toggle3D()">3D</button>
+                    ${model3DButton}
                 </div>
             </div>
 
-            <div id="threed-view" style="display: none;">
-            <button class="view-3d-model" onclick="toggle2D()">2D</button>
-                <model-viewer
-                    src="${model.model3d}"
-                    alt="${model.name} 3D Model"
-                    auto-rotate
-                    camera-controls
-                    shadow-intensity="1"
-                    style="width: 100%; height: 600px;">
-                </model-viewer>
-            </div>
+            ${model3DView}
 
             <section id="model-info">
                 <div class="model-info-name">${model.name}</div>
-                <div class="model-info-desc">${model.desc}</div>
-                <a href="${model.sketchfab}" class="sketchfab"> SketchFab </a>
+                ${modelDescription}
+                ${sketchfabLink}
             </section>
         </div>
 

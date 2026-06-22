@@ -217,12 +217,21 @@ function makeDraggable(bar) {
 
 async function loadStreams() {
     try {
-        const response = await fetch(`https://namastream.migueloliv-dev.workers.dev/v3/youtube`);
-        const twitchRes = await fetch(`https://namastream.migueloliv-dev.workers.dev/v3/twitch`);
+        const responses = await Promise.all([
+            fetch('https://namastream.migueloliv-dev.workers.dev/v3/youtube/1'),
+            fetch('https://namastream.migueloliv-dev.workers.dev/v3/youtube/2'),
+            fetch('https://namastream.migueloliv-dev.workers.dev/v3/twitch')
+        ]);
 
-        const videosResponse = await response.json();
-        const twitchResponse = await twitchRes.json();
+        const failedResponse = responses.find(response => !response.ok);
+        if (failedResponse) {
+            throw new Error(`Stream API request failed: ${failedResponse.status}`);
+        }
 
+        const [youtubePartOne, youtubePartTwo, twitchResponse] = await Promise.all(
+            responses.map(response => response.json())
+        );
+        const videosResponse = [...youtubePartOne, ...youtubePartTwo];
         const data = filterStreams(videosResponse, twitchResponse);
         streamsData = data;
         renderStreams(data.HappeningStreams, data.ScheduledStreams, data.TwitchStreams);
